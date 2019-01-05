@@ -94,7 +94,7 @@ Execute() {
     }
     For Combo2, Value2 in AllCombinations {
       If Value1 + Value2 == Value { ; if the 2-dart combo matches Value:
-        thisCombo := Sort(Combo1 "," Combo2, "FMySort1 D,") ; sort this combo in a logical way, so we can check for duplicates easier.
+        thisCombo := Sort(Combo1 "," Combo2, "FSort1 D,") ; sort this combo in a logical way, so we can check for duplicates easier.
         
         If !InStr(Output, thisCombo) {
           Output .= thisCombo "`r`n"
@@ -103,7 +103,7 @@ Execute() {
       }
       For Combo3, Value3 in AllCombinations {
         If Value1 + Value2 + Value3 == Value { ; if hte 3-dart combo matches Value:
-          thisCombo := Sort(Combo1 "," Combo2 "," Combo3, "FMySort1 D,")
+          thisCombo := Sort(Combo1 "," Combo2 "," Combo3, "FSort1 D,")
           
           If !InStr(Output, thisCombo) {
             Output .= thisCombo "`r`n"
@@ -125,7 +125,7 @@ Execute() {
   ListViewThrows.Delete() ; empty the ListView.
   
   If not Count < 1 {
-    Output := Sort(Output, "FMySort2") ; sort in a logical way.
+    Output := Sort(Output, "FSort2") ; sort in a logical way.
     Output := RTrim(Output, "`r`n") ; remove the last newline.
     
     Loop Parse, Output, "`n" { ; on every line of Output...
@@ -141,23 +141,44 @@ Execute() {
 
 ; functions:
 
-MySort1(One, Two) { ; 1st piece of magic:
-  static S := 1, D := 2, T := 3
-  If (Value1 := %SubStr(One, 1, 1)% * SubStr(One, 2)) != (Value2 := %SubStr(Two, 1, 1)% * SubStr(Two, 2)) {
-    Return Value1 < Value2? 1 : -1
-  }
+Sort1(One, Two) { ; sorts throws:
+  /*
+    Each throw is of the format MN. M is the multiplier (S, D, T), N is the number (1-20 and 25).
+    Sort priority:
+      The higher N * M, the earlier.
+  */
+  
+  static Multipliers := {S: 1, D: 2, T: 3}
+  Return (Multipliers[SubStr(Two, 1, 1)] * SubStr(Two, 2)) - (Multipliers[SubStr(One, 1, 1)] * SubStr(One, 2))
 }
-MySort2(One, Two) { ; 2nd piece of magic:
-  static S := 1, D := 2, T := 3
+Sort2(One, Two) { ; sorts lines:
+  /*
+    Sort priority:
+      1: The less throws a line requires, the earlier.
+      2: The higher the multiplier of a throw, the earlier.
+      3: The higher the number of a throw, the earlier.
+  */
+  
+  static Multipliers := {S: 1, D: 2, T: 3}
+  
+  ; arrays are easier to work with:
   ArrayOne := StrSplit(One, ",")
   ArrayTwo := StrSplit(Two, ",")
+  
   Loop Max(ArrayOne.Length(), ArrayTwo.Length()) {
-    If ArrayOne.Length() != ArrayTwo.Length()
-      Return ArrayOne.Length() < ArrayTwo.Length()? -1 : 1
-    If (LetterOne := %SubStr(ArrayOne[A_Index], 1, 1)%) != (LetterTwo := %SubStr(ArrayTwo[A_Index], 1, 1)%)
-      Return LetterOne < LetterTwo? 1 : -1
-    If (ValueOne := SubStr(ArrayOne[A_Index], 2)) != (ValueTwo := SubStr(ArrayTwo[A_Index], 2))
-      Return +ValueOne < +ValueTwo? 1 : -1
+    If ArrayOne.Length() != ArrayTwo.Length() { ; one line requires less throws:
+      Return ArrayOne.Length() - ArrayTwo.Length() ; put that line first.
+    }
+    
+    If Multipliers[SubStr(ArrayOne[A_Index], 1, 1)] != Multipliers[SubStr(ArrayTwo[A_Index], 1, 1)] { ; one throw is on a higher-grade field (e.g.: T20 vs. D20):
+      Return Multipliers[SubStr(ArrayTwo[A_Index], 1, 1)] - Multipliers[SubStr(ArrayOne[A_Index], 1, 1)] ; put that line first.
+    }
+    
+    If SubStr(ArrayOne[A_Index], 2) != SubStr(ArrayTwo[A_Index], 2) { ; one throw is on a field with a higher number (e.e.: S2 vs. S1):
+      Return SubStr(ArrayTwo[A_Index], 2) - SubStr(ArrayOne[A_Index], 2) ; put that line first.
+    }
+    
+    ; If nothing is true, the loop continues and the next throw is being examined.
   }
 }
 
