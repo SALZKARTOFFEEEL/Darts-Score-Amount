@@ -28,8 +28,6 @@ EditScore.Value := 180
 
 ButtonExecute := Gui.AddButton("W144 X" Gui.MarginX " Default", StaticTexts.ButtonExecute), ButtonExecute.OnEvent("Click", "Execute")
 
-Progress := Gui.AddProgress("W144 0x10") ; 0x10 == PBS_SMOOTHREVERSE
-
 ListViewThrows := Gui.AddListView("NoSort W144 H" A_ScreenHeight-360 " -LV0x10", StaticTexts.ListViewThrows), ListViewThrows.ModifyCol(1, "Center"), ListViewThrows.ModifyCol(2, "Center"), ListViewThrows.ModifyCol(3, "Center")
 
 EditAmount := Gui.AddEdit("W144 ReadOnly")
@@ -58,8 +56,6 @@ For Letter, Multiplier in Multipliers {
   }
 }
 
-Progress.Options("Range0-" Count) ; Progress goes from 0 to the amount of combinations.
-
 Gui.Show()
 
 Execute() ; execute when the script starts.
@@ -81,7 +77,6 @@ Execute() {
 
   Gui.Options("Disabled") ; disable the user input so that this function doesn't activate while it's already running. This loution is generally bad, but since every Execute() only takes a split second, it should be fine.
 
-  Progress.Value := 0 ; reset the progress bar.
   Count := 0 ; reset Count (it is used for a different purpose now – to count all combinations and give an end result. I know... I know).
   Output := ""
   Value := EditScore.Value ; short-hand.
@@ -117,7 +112,6 @@ Execute() {
         }
       }
     }
-    Progress.Value++ ; progress the progress bar, lol
   }
   
   DllCall("GetSystemTimeAsFileTime", "UInt64*", EndTime) ; end the time counter.
@@ -207,8 +201,7 @@ Resize(GuiObj, MinMax, W, H) { ; callback for every mouse event while resizing t
   ; move stuff:
   ,	EditScore.Move("W" W - 3 * Gui.MarginX - TextScore.Pos.W)
   ,	ButtonExecute.Move("W" W - 2 * Gui.MarginX)
-  ,	Progress.Move("W" W - 2 * Gui.MarginX)
-  ,	ListViewThrows.Move("W" W - 2 * Gui.MarginX " H" H - 2 * Gui.MarginY - 161)
+  ,	ListViewThrows.Move("W" W - 2 * Gui.MarginX " H" H - 2 * Gui.MarginY - 136)
   ,	EditAmount.Move("Y" Gui.MarginY + ListViewThrows.Pos.Y + ListViewThrows.Pos.H " W" W - 2 * Gui.MarginX)
   ,	ButtonExport.Move("Y" Gui.MarginY + EditAmount.Pos.Y + EditAmount.Pos.H " W" W - 2 * Gui.MarginX)
   ,	TextSALZ.Move("Y" Gui.MarginY + ButtonExport.Pos.Y + ButtonExport.Pos.H " W" W - 2 * Gui.MarginX, True)
