@@ -6,13 +6,13 @@ If A_Args[1] = "/de" {
   Title := "Darts Würfe-Berechner"
   StaticTexts := {TextScore: "&Punktzahl:", CheckBoxDoubleOut: "Muss Double Out sein?", ButtonExecute: "&Berechnen", ListViewThrows: ["1.", "2.", "3."], ButtonExport: "E&xportieren...", TextSALZ: "von SALZKARTOFFEEEL"}
   DialogTexts := {Title: "Exportieren...", Textfile: "Textdateien"}
-  DynamicTexts := {EditAmount: ["Es gibt %1 Möglichkeiten!", "Es gibt nur %1 Möglichkeit!"], FileName: [Title . " – " . "Alle %1 Wege, um %2 zu werfen.txt", Title . " – " . "Einziger Weg, um %2 zu werfen.txt"]}
+  DynamicTexts := {EditAmount: ["Es gibt %1 Möglichkeiten!", "Es gibt nur %1 Möglichkeit!"], FileName: [Title . " – " . "Alle %1 Wege, um %2 zu werfen.txt", Title . " – " . "Einziger Weg, um %2 zu werfen.txt"], AmountOfTime: "Circa %1 ms gebraucht."}
 }
 Else {
   Title := "Darts Score Amount"
   StaticTexts := {TextScore: "&Score:", CheckBoxDoubleOut: "Has to be double out?", ButtonExecute: "&Calculate", ListViewThrows: ["1st", "2nd", "3rd"], ButtonExport: "E&xport...", TextSALZ: "by SALZKARTOFFEEEL"}
   DialogTexts := {Title: "Export...", Textfile: "Text Documents"}
-  DynamicTexts := {EditAmount: ["There are %1 ways!", "There is only %1 way!"], FileName: [Title . " – " . "All %1 ways to score %2.txt", Title . " – " . "Only way to score %2.txt"]}
+  DynamicTexts := {EditAmount: ["There are %1 ways!", "There is only %1 way!"], FileName: [Title . " – " . "All %1 ways to score %2.txt", Title . " – " . "Only way to score %2.txt"], AmountOfTime: "Took around %1 ms."}
 }
 
 ; Create the GUI:
@@ -116,7 +116,7 @@ Execute() {
   
   DllCall("GetSystemTimeAsFileTime", "UInt64*", EndTime) ; end the time counter.
   
-  ButtonExecute.Text := "Took around " Format("{:i}", (EndTime - StartTime) / 10000) " ms." ; show how long the calculation took.
+  ButtonExecute.Text := StrReplace(DynamicTexts.AmountOfTime, "%1", Format("{:i}", (EndTime - StartTime) / 10000)) ; show how long the calculation took.
   
   Gui.Options("-Disabled")
   
