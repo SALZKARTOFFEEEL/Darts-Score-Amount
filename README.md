@@ -16,6 +16,32 @@ _and so on..._
 
 It will also tell you the total amount of ways – in this case 360!
 
+
+## How To Download & Use
+### Downloading
+Use GitHub's Download button at the top-right, or click [**here**](https://github.com/SALZKARTOFFEEEL/Darts-Score-Amount/archive/master.zip) to download a ZIP-Archive of all the required files.
+
+To know which files are relevant to you, refer to the next section.
+
+### Running
+
+This program is written in [AutoHotkey](https://www.autohotkey.com/). Do you know AutoHotkey?
+
+#### I know AutoHotkey!
+Great! Just download the source code and run it. **Make sure you have v2 installed**, as this will not run in v1!
+
+This program will run on any system AutoHotkey runs on.  
+You may even get it to work with [AutoKey](https://github.com/autokey/autokey) on Linux, though this is unsupported and untested.
+
+
+#### I don't know AutoHotkey :(
+Don't be sad, that's okay. I have prepared an executable file (.exe) so you can run this program without any knowledge of AutoHotkey.
+Just run `Darts Score Amount.exe` and you are good to go.
+
+This program will run on Windows machines.  
+While Windows XP is no longer supported, I could imagine it still running on it. All newer versions of Windows, like Windows 10, Windows 8, or Windows 7, should work perfectly fine.
+
+
 ## Plans
 * **Respect Order**:
   Add the option to select whether the order that the darts are thrown in should be respected or not. For example: if `S2 S1` comes up, there won't be a `S1 S2` in the list – it will be sorted out. This should be optional.
