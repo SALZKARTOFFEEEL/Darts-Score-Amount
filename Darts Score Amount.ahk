@@ -19,7 +19,7 @@ Else {
 Gui := GuiCreate("+Resize -MaximizeBox -MinimizeBox", Title)
 Gui.OnEvent("Size", "Resize"), Gui.OnEvent("Close", "Exit")
 Gui.MarginX := Gui.MarginY := 8
-Gui.Options("MinSize" 144 + 2 * Gui.MarginX "x" 222)
+Gui.Options("MinSize" 144 + 2 * Gui.MarginX "x" 197)
 
 TextScore := Gui.AddText(, StaticTexts.TextScore)
 
