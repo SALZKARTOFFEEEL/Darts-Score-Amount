@@ -1,5 +1,5 @@
 # Darts Score Amount
-#### A program to calculate all possible ways of scoring a defined value.
+#### A program to calculate all possible ways of scoring a defined value in the game Darts.
 
 ## Purpose
 You enter a value from 1 to 180, hit Calculate, it calculates the number of ways to score that amount. – As simple as that.
