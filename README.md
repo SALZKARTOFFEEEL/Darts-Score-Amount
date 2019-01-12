@@ -32,7 +32,7 @@ This program is written in [AutoHotkey](https://www.autohotkey.com/). Do you kno
 Great! Just download the source code and run it. **Make sure you have v2 installed**, as this will not run in v1!
 
 This program will run on any system AutoHotkey runs on.  
-You may even get it to work with [AutoKey](https://github.com/autokey/autokey) on Linux, though this is unsupported and untested.
+It is tested on the 64-bit, Unicode version, but you should run into no trouble using other versions.
 
 
 #### I don't know AutoHotkey :(
